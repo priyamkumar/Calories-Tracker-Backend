@@ -20,6 +20,9 @@ app.use(cors({
     credentials: true,
 }));
 
+app.get("/", (req, res) => {
+    res.send("Working")
+});
 app.use("/api/v1/user", require("./routes/userRoutes"));
 app.use("/api/v1/track", require("./routes/trackingRoutes"));
 app.use("/api/v1/details", require("./routes/detailsRoutes"));
