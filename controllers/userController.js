@@ -72,4 +72,11 @@ const logoutUser = asyncHandler(async (req, res) => {
     });
 });
 
-module.exports = { registerUser, loginUser, logoutUser };
+const getUser = asyncHandler(async (req, res) => {
+  res.json({
+      success: true,
+      user: req.user,
+    });
+});
+
+module.exports = { registerUser, loginUser, logoutUser, getUser };
