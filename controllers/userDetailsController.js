@@ -39,4 +39,26 @@ const addOrUpdateDetails = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { addOrUpdateDetails };
+const getDetails = asyncHandler(async (req, res) => {
+  user_id = req.user;
+  if (
+    (!user_id)
+  ) {
+    res.status(400);
+    throw new Error("Please add your details in settings.");
+  }
+
+  let details = await Details.findOne(
+    {
+      user: user_id,
+    },
+  );
+  if (details) {
+    res.status(201).json({
+      success: true,
+      details: details,
+    });
+  }
+});
+
+module.exports = { addOrUpdateDetails, getDetails };
