@@ -10,10 +10,9 @@ const getUserItems = asyncHandler(async (req, res) => {
   let meals = await Track.find({
     user: userId,
   });
-  console.log(meals)
   res.status(201).json({
     success: true,
-    message: `Meals fetched. ${meals}`,
+    meals: meals,
   });
 });
 

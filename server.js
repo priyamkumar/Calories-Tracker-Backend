@@ -10,7 +10,6 @@ const port = process.env.PORT || 5000;
 
 connectDb()
 const app = express();
-console.log();
 
 app.use(express.json());
 app.use(cookieParser());
