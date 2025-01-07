@@ -1,7 +1,9 @@
 const asyncHandler = require("express-async-handler");
 const User = require("../models/userModel");
+const Details = require("../models/userDetailsModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const Track = require("../models/trackingModel");
 
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
@@ -47,7 +49,7 @@ const loginUser = asyncHandler(async (req, res) => {
         httpOnly: true,
         maxAge: 15 * 60 * 1000,
         sameSite: process.env.NODE_ENV === "Development" ? "lax" : "none",
-        secure: process.env.NODE_ENV === "Development" ? false : true
+        secure: process.env.NODE_ENV === "Development" ? false : true,
       })
       .json({
         success: true,
@@ -64,7 +66,7 @@ const logoutUser = asyncHandler(async (req, res) => {
     .cookie("token", "", {
       expires: new Date(Date.now()),
       sameSite: process.env.NODE_ENV === "Development" ? "lax" : "none",
-      secure: process.env.NODE_ENV === "Development" ? false : true
+      secure: process.env.NODE_ENV === "Development" ? false : true,
     })
     .json({
       success: true,
@@ -73,10 +75,31 @@ const logoutUser = asyncHandler(async (req, res) => {
 });
 
 const getUser = asyncHandler(async (req, res) => {
-  res.json({
+  user_id = req.user;
+  if (!user_id) {
+    res.status(400);
+    throw new Error("Please add your details in settings.");
+  }
+
+  let details = await Details.findOne({
+    user: user_id,
+  });
+  
+  if(!details) {
+    throw new Error("Please add your details in settings.");
+  }
+
+  let meals = await Track.find({
+      user: user_Id,
+    });
+  
+    res.status(201).json({
       success: true,
       user: req.user,
+      details,
+      meals
     });
+  
 });
 
 module.exports = { registerUser, loginUser, logoutUser, getUser };
