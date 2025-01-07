@@ -85,14 +85,10 @@ const getUser = asyncHandler(async (req, res) => {
     user: user_id,
   });
   
-  if(!details) {
-    throw new Error("Please add your details in settings.");
-  }
-
   let meals = await Track.find({
-      user: user_Id,
+      user: user_id,
     });
-  
+
     res.status(201).json({
       success: true,
       user: req.user,
