@@ -75,6 +75,10 @@ const logoutUser = asyncHandler(async (req, res) => {
 });
 
 const getUser = asyncHandler(async (req, res) => {
+  var start = new Date(req.body.date);
+  start.setHours(0, 0, 0, 0);
+  var end = new Date(req.body.date);
+  end.setHours(23, 59, 59, 999);
   user_id = req.user;
   if (!user_id) {
     res.status(400);
@@ -84,18 +88,18 @@ const getUser = asyncHandler(async (req, res) => {
   let details = await Details.findOne({
     user: user_id,
   });
-  
-  let meals = await Track.find({
-      user: user_id,
-    });
 
-    res.status(201).json({
-      success: true,
-      user: req.user,
-      details,
-      meals
-    });
-  
+  let meals = await Track.find({
+    user: user_id,
+    createdAt: {$gte: start, $lt: end}
+  });
+
+  res.status(201).json({
+    success: true,
+    user: req.user,
+    details,
+    meals,
+  });
 });
 
 module.exports = { registerUser, loginUser, logoutUser, getUser };
