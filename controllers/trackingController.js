@@ -17,11 +17,12 @@ const getUserItems = asyncHandler(async (req, res) => {
 });
 
 const newItem = asyncHandler(async (req, res) => {
-  const { mealName, mealType, quantity, calories } = req.body;
+  const { mealName, mealType, quantity, calories, mealDate } = req.body;
   if (!mealName || !mealType || !quantity || !calories) {
     res.status(400);
     throw new Error("All fields are mandatory.");
   }
+  let currentDate = new Date(mealDate);
   userId = req.user;
   let meal = await Track.create({
     mealName,
@@ -29,6 +30,7 @@ const newItem = asyncHandler(async (req, res) => {
     quantity,
     user: userId,
     calories,
+    createdAt: mealDate
   });
   res.status(201).json({
     success: true,
