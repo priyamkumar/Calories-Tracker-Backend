@@ -27,15 +27,7 @@ const newItem = asyncHandler(async (req, res) => {
     protein,
     fats,
   } = req.body;
-  if (
-    !mealName ||
-    !mealType ||
-    !quantity ||
-    !calories ||
-    !carbs ||
-    !protein ||
-    !fats
-  ) {
+  if (!mealName || !mealType || !quantity || !calories) {
     res.status(400);
     throw new Error("All fields are mandatory.");
   }
@@ -69,16 +61,7 @@ const updateItem = asyncHandler(async (req, res) => {
     protein,
     fats,
   } = req.body;
-  if (
-    !mealId ||
-    !mealName ||
-    !mealType ||
-    !quantity ||
-    !calories ||
-    !carbs ||
-    !protein ||
-    !fats
-  ) {
+  if (!mealId || !mealName || !mealType || !quantity || !calories) {
     res.status(400);
     throw new Error("All fields are mandatory.");
   }
@@ -99,7 +82,7 @@ const updateItem = asyncHandler(async (req, res) => {
     }
   );
 
-  if(!meal) {
+  if (!meal) {
     res.status(404);
     throw new Error("Meal not found.");
   }
