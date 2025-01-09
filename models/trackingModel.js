@@ -17,6 +17,15 @@ const trackingSchema = mongoose.Schema(
     calories: {
       type: Number,
     },
+    carbs: {
+      type: Number,
+    },
+    protein: {
+      type: Number,
+    },
+    fats: {
+      type: Number,
+    },
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

@@ -17,12 +17,29 @@ const getUserItems = asyncHandler(async (req, res) => {
 });
 
 const newItem = asyncHandler(async (req, res) => {
-  const { mealName, mealType, quantity, calories, mealDate } = req.body;
-  if (!mealName || !mealType || !quantity || !calories) {
+  const {
+    mealName,
+    mealType,
+    quantity,
+    calories,
+    mealDate,
+    carbs,
+    protein,
+    fats,
+  } = req.body;
+  if (
+    !mealName ||
+    !mealType ||
+    !quantity ||
+    !calories ||
+    !carbs ||
+    !protein ||
+    !fats
+  ) {
     res.status(400);
     throw new Error("All fields are mandatory.");
   }
-  let currentDate = new Date(mealDate);
+
   userId = req.user;
   let meal = await Track.create({
     mealName,
@@ -30,7 +47,10 @@ const newItem = asyncHandler(async (req, res) => {
     quantity,
     user: userId,
     calories,
-    createdAt: mealDate
+    carbs,
+    protein,
+    fats,
+    createdAt: mealDate,
   });
   res.status(201).json({
     success: true,
@@ -39,8 +59,26 @@ const newItem = asyncHandler(async (req, res) => {
 });
 
 const updateItem = asyncHandler(async (req, res) => {
-  const { mealId, mealName, mealType, quantity, calories } = req.body;
-  if (!mealId || !mealName || !mealType || !quantity || !calories) {
+  const {
+    mealId,
+    mealName,
+    mealType,
+    quantity,
+    calories,
+    carbs,
+    protein,
+    fats,
+  } = req.body;
+  if (
+    !mealId ||
+    !mealName ||
+    !mealType ||
+    !quantity ||
+    !calories ||
+    !carbs ||
+    !protein ||
+    !fats
+  ) {
     res.status(400);
     throw new Error("All fields are mandatory.");
   }
@@ -55,8 +93,16 @@ const updateItem = asyncHandler(async (req, res) => {
       mealType,
       quantity,
       calories,
+      carbs,
+      protein,
+      fats,
     }
   );
+
+  if(!meal) {
+    res.status(404);
+    throw new Error("Meal not found.");
+  }
 
   res.status(200).json({
     success: true,
@@ -71,12 +117,10 @@ const deleteItem = asyncHandler(async (req, res) => {
     throw new Error("Meal not found.");
   }
   userId = req.user;
-  let meal = await Track.findByIdAndDelete(
-    {
-      _id: mealId,
-      user: userId,
-    }
-  );
+  let meal = await Track.findByIdAndDelete({
+    _id: mealId,
+    user: userId,
+  });
 
   res.status(200).json({
     success: true,
