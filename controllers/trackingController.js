@@ -47,6 +47,7 @@ const newItem = asyncHandler(async (req, res) => {
   res.status(201).json({
     success: true,
     message: `Meal added. ${meal}`,
+    id: meal._id
   });
 });
 
