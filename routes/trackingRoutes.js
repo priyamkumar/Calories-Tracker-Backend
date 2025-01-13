@@ -1,4 +1,4 @@
-const { getUserItems, newItem, updateItem, deleteItem } = require("../controllers/trackingController");
+const { getUserItems, newItem, updateItem, deleteItem, foodData } = require("../controllers/trackingController");
 const express = require("express");
 const isAuthenticated = require("../middleware/auth");
 
@@ -8,5 +8,6 @@ router.get("/", isAuthenticated, getUserItems);
 router.post("/new", isAuthenticated, newItem);
 router.put("/update", isAuthenticated, updateItem);
 router.delete("/delete", isAuthenticated, deleteItem);
+router.get("/foodData", foodData);
 
 module.exports = router;
