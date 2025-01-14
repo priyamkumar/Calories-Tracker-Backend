@@ -132,6 +132,9 @@ const getCaloriesData = asyncHandler(async (req, res) => {
       $group: {
         _id: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt' } },
         totalCalories: { $sum: { $ifNull: ['$calories', 0] } },
+        totalCarbs: { $sum: { $ifNull: ['$carbs', 0] } },
+        totalProtein: { $sum: { $ifNull: ['$protein', 0] } },
+        totalFats: { $sum: { $ifNull: ['$fats', 0] } },
       },
     },
     { $sort: { _id: 1 } },
