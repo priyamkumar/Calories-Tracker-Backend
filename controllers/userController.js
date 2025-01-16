@@ -97,6 +97,7 @@ const getUser = asyncHandler(async (req, res) => {
   res.status(201).json({
     success: true,
     user: req.user,
+    token: req.token,
     details,
     meals,
   });
