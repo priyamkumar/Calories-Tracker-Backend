@@ -42,7 +42,7 @@ const loginUser = asyncHandler(async (req, res) => {
   }
   const user = await User.findOne({ email });
   if (user && (await bcrypt.compare(password, user.password))) {
-    const accessToken = jwt.sign(user.id, process.env.ACCESS_TOKEN_SECRET);
+    const accessToken = jwt.sign({userId: user.id.toString()}, process.env.ACCESS_TOKEN_SECRET);
     res
       .status(200)
       .cookie("token", accessToken, {
