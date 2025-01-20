@@ -42,7 +42,10 @@ const loginUser = asyncHandler(async (req, res) => {
   }
   const user = await User.findOne({ email });
   if (user && (await bcrypt.compare(password, user.password))) {
-    const accessToken = jwt.sign({userId: user.id.toString()}, process.env.ACCESS_TOKEN_SECRET);
+    const accessToken = jwt.sign(
+      { userId: user.id.toString() },
+      process.env.ACCESS_TOKEN_SECRET
+    );
     res
       .status(200)
       .cookie("token", accessToken, {
@@ -75,23 +78,24 @@ const logoutUser = asyncHandler(async (req, res) => {
 });
 
 const getUser = asyncHandler(async (req, res) => {
-  var start = new Date(req.body.date);
+  let start = new Date(req.body.date);
   start.setHours(0, 0, 0, 0);
-  var end = new Date(req.body.date);
+  let end = new Date(req.body.date);
   end.setHours(23, 59, 59, 999);
-  user_id = req.user;
-  if (!user_id) {
-    res.status(400);
-    throw new Error("Please add your details in settings.");
-  }
+  let user_id = req.user;
 
   let details = await Details.findOne({
     user: user_id,
   });
 
+  if (!details) {
+    res.status(400);
+    throw new Error("Please add your details in settings.");
+  }
+
   let meals = await Track.find({
     user: user_id,
-    createdAt: {$gte: start, $lt: end}
+    createdAt: { $gte: start, $lt: end },
   });
 
   res.status(201).json({
