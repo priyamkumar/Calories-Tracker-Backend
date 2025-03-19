@@ -4,6 +4,7 @@ const errorHandler = require("./middleware/errorHandler");
 const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const helmet = require("helmet");
 
 dotenv.config();
 const port = process.env.PORT || 5000;
@@ -13,6 +14,7 @@ const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(helmet())
 app.use(
   cors({
     origin: [process.env.FRONTEND_URL],
